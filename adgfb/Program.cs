@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using Raylib_cs;
 
 namespace fghbj
@@ -8,73 +9,51 @@ namespace fghbj
         static void Main(string[] args)
         {
 
-            int mainX = 375;
-            int mainY = 300;
-            int speedxE = 2;
-            int speedyE = 2;
-            int eW = 40;
-            int eH = 40;
-
-
             Raylib.InitWindow(800, 600, "CUBE");
+
             Raylib.SetTargetFPS(60);
 
-            Random generator = new Random();
-            int eX = generator.Next(760);
-            int eY = generator.Next(560);
-            Rectangle rP = new Rectangle(mainX, mainY, 40, 40);
-            Rectangle rE = new Rectangle(eX, eY, eH, eW);
+            Rectangle block = new Rectangle(50, 50, 50, 50);
+            Rectangle avatar = new Rectangle(400 - 20, 300 - 20, 40, 40);
 
-
-
-            bool pause = false;
-            if (Raylib.IsKeyPressed(KeyboardKey.KEY_SPACE)) pause = !pause;
+            Camera2D camera = new Camera2D();
+            camera.zoom = 1;
+            //camera.target = new Vector2(400, 300);
 
             while (!Raylib.WindowShouldClose())
             {
-                Raylib.BeginDrawing();
+                // Logic
 
-                //background
-                Raylib.ClearBackground(Color.WHITE);
-                Raylib.DrawText("DEN BITS!, SPRING MED WASD", 5, 0, 50, Color.RED);
-
-                //character den ska kunna röa sig med wasd
-                Raylib.DrawRectangle(mainX, mainY, 40, 40, Color.ORANGE);
-                if (Raylib.IsKeyDown(KeyboardKey.KEY_W))
-                {
-                    mainY += -2;
-                }
-                if (Raylib.IsKeyDown(KeyboardKey.KEY_S))
-                {
-                    mainY += 2;
-                }
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
                 {
-                    mainX += -2;
+                    avatar.x -= 3f;
+                    camera.offset.X += 3f;
                 }
                 if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
                 {
-                    mainX += 2;
+                    avatar.x += 3f;
+                    camera.offset.X -= 3f;
                 }
-
-                // Enemy tanken är att den ska åka runt på random och man ska föröska undvika dem, tanken var att man skulle spanna in mer efter tid
-                Raylib.DrawRectangle(eX, eY, eH, eW, Color.RED);
-
-                if (!pause) eX += speedxE;
-                if (!pause) eY += speedyE;
-                if (((eX + eW) >= Raylib.GetScreenWidth()) || (eX <= 0)) speedxE *= -1;
-                if (((eY + eH) >= Raylib.GetScreenHeight()) || (eY <= 0)) speedyE *= -1;
-
-                //kollision, koden är bara tagen från C# dokumentationen, men fungerade inte.
-                bool isColliding = Raylib.CheckCollisionRecs(rP, rE);
-                if (isColliding)
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_S))
                 {
-                    Raylib.DrawText("AAAAA du dog!!!", 300, 200, 50, Color.BLACK);
-                    pause = true;
+                    avatar.y += 3f;
+                    camera.offset.Y -= 3f;
+                }
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_W))
+                {
+                    avatar.y -= 3f;
+                    camera.offset.Y += 3f;
                 }
 
 
+                // Drawing
+                Raylib.BeginDrawing();
+                Raylib.ClearBackground(Color.WHITE);
 
+                Raylib.BeginMode2D(camera);
+                Raylib.DrawRectangleRec(block, Color.RED);
+                Raylib.DrawRectangleRec(avatar, Color.ORANGE);
+                Raylib.EndMode2D();
 
                 Raylib.EndDrawing();
 
