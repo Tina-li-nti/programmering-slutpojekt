@@ -63,7 +63,7 @@ namespace fghbj
                     camera.offset.Y = camera.offset.Y - 3;
                 }
 
-                if (avatar.y > 563)
+                if (avatar.y > 760)
                 {
                     avatar.y = avatar.y - 3;
                     camera.offset.Y = camera.offset.Y + 3;
