@@ -9,14 +9,14 @@ namespace fghbj
         static void Main(string[] args)
         {
 
-            Raylib.InitWindow(800, 600, "CUBE");
+            Raylib.InitWindow(1000, 700, "CUBE");
 
             Raylib.SetTargetFPS(60);
 
             Rectangle block = new Rectangle(100, 50, 50, 50);
             Rectangle worldMap = new Rectangle(-200, -200, 900, 700);
             Rectangle avatar = new Rectangle(400 - 20, 300 - 20, 40, 40);
-            bool areOverlapping = Raylib.CheckCollisionRecs(block, avatar);
+            Rectangle textBox = new Rectangle(-100, 50, 30, 80);
             Camera2D camera = new Camera2D();
             camera.zoom = 1;
             //camera.target = new Vector2(400, 300);
@@ -70,11 +70,7 @@ namespace fghbj
                     camera.offset.Y = camera.offset.Y + 3;
                 }
 
-                if (areOverlapping == true)
-                {
-                    Raylib.DrawText("Hello World", 100, 50, 20, Color.ORANGE);
-                }
-
+                bool areOverlapping = Raylib.CheckCollisionRecs(block, avatar);
 
                 // Drawing
                 Raylib.BeginDrawing();
@@ -84,6 +80,13 @@ namespace fghbj
                 Raylib.DrawRectangleRec(worldMap, Color.WHITE);
                 Raylib.DrawRectangleRec(block, Color.RED);
                 Raylib.DrawRectangleRec(avatar, Color.ORANGE);
+                if (areOverlapping == true)
+                {
+                    Raylib.DrawText("... oh hey kid, wait you are not supposed to be here", -180, -100, 30, Color.RED);
+                    Raylib.DrawText("who are you?", -100, -50, 30, Color.RED);
+                    Raylib.DrawRectangle(textBox, Color.GRAY);
+                }
+
                 Raylib.EndMode2D();
 
                 Raylib.EndDrawing();
