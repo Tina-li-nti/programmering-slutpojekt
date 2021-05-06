@@ -21,13 +21,18 @@ namespace fghbj
             Rectangle worldMap = new Rectangle(-200, -200, 900, 700);
             Rectangle avatar = new Rectangle(400 - 20, 300 - 20, 40, 40);
             Rectangle textBox = new Rectangle(150, -55, 250, 50);
+            float timerMaxValue = 60;
+            float timerCurrentValue = timerMaxValue;
 
             int MAX_INPUT_CHARS = 9;
-            // char name[MAX_INPUT_CHARS + 1] = "\0";      // NOTE: One extra space required for line ending char '\0'
             int letterCount = 0;
             List<char> name = new List<char>();
 
             bool mouseOnText = false;
+            bool walkA = true;
+            bool walkS = true;
+            bool walkD = true;
+            bool walkW = true;
 
             Camera2D camera = new Camera2D();
 
@@ -38,22 +43,22 @@ namespace fghbj
             {
                 // Logic
 
-                if (Raylib.IsKeyDown(KeyboardKey.KEY_A))
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_A) && walkA == true)
                 {
                     avatar.x -= 3f;
                     camera.offset.X += 3f;
                 }
-                if (Raylib.IsKeyDown(KeyboardKey.KEY_D))
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_D) && walkD == true)
                 {
                     avatar.x += 3f;
                     camera.offset.X -= 3f;
                 }
-                if (Raylib.IsKeyDown(KeyboardKey.KEY_S))
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_S) && walkS == true)
                 {
                     avatar.y += 3f;
                     camera.offset.Y -= 3f;
                 }
-                if (Raylib.IsKeyDown(KeyboardKey.KEY_W))
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_W) && walkW == true)
                 {
                     avatar.y -= 3f;
                     camera.offset.Y += 3f;
@@ -95,17 +100,22 @@ namespace fghbj
                 Raylib.DrawRectangleRec(block, Color.RED);
                 Raylib.DrawRectangleRec(avatar, Color.ORANGE);
                 if (areOverlapping == true)
+
                 {
+                    walkA = false;
+                    walkD = false;
+                    walkS = false;
+                    walkW = false;
+
                     Raylib.DrawText("... oh hey kid, wait you are not supposed to be here", -180, -100, 30, Color.RED);
                     Raylib.DrawText("who are you?", -100, -50, 30, Color.RED);
                     Raylib.DrawRectangleRec(textBox, Color.GRAY);
                     if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), textBox)) mouseOnText = true;
                     else mouseOnText = false;
 
-                    //  if (mouseOnText)
+
                     {
-                        // Set the window's cursor to the I-Beam
-                        // Raylib.SetMouseCursor(MOUSE_CURSOR_IBEAM);
+
 
                         // Get char pressed (unicode character) on the queue
                         int key = Raylib.GetCharPressed();
@@ -116,9 +126,9 @@ namespace fghbj
                             //NOTE: Only allow keys in range [32..125]
                             if ((key >= 32) && (key <= 125) && (name.Count < MAX_INPUT_CHARS))
                             {
-                                // name[letterCount] = (char)key;
+
                                 name.Add((char)key);
-                                //letterCount++;
+
                             }
 
                             key = Raylib.GetCharPressed();  // Check next character in the queue
@@ -126,17 +136,30 @@ namespace fghbj
 
                         if (Raylib.IsKeyPressed(KeyboardKey.KEY_BACKSPACE))
                         {
-                            //letterCount--;
+
                             if (name.Count > 0) name.RemoveAt(name.Count - 1);
-                            //name[letterCount] = '\0';
+
                         }
                     }
-                    //else Raylib.SetMouseCursor(MOUSE_CURSOR_DEFAULT);
+
 
 
                     string namestr = new string(name.ToArray());
                     Raylib.DrawText(namestr, 170, -55, 40, Color.RED);
+                    if (Raylib.IsKeyPressed(KeyboardKey.KEY_ENTER))
+                    {
 
+                        int xA = (int)avatar.x;
+
+                        int yA = (int)avatar.y;
+                        Raylib.DrawText(namestr, xA + 20, yA - 40, 30, Color.YELLOW);
+                    }
+
+                    timerCurrentValue -= Raylib.GetFrameTime();
+                    if (timerCurrentValue < 0)
+                    {
+
+                    }
                 }
                 Raylib.EndMode2D();
 
