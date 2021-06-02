@@ -8,27 +8,33 @@ namespace fghbj
 {
     class Program
     {
+        //Metod som tar emot parameterar och gör felmedelandet koolare.
+        static void coolSmiley(string text)
+        {
+            Raylib.DrawText(text + " ^_^", 100, 150, 30, Color.PINK);
+        }
         // Detta är en metod som säger åt användaren att han har gjort fel.
         static void thisIsNotTheWASDKeys()
         {
             if (Raylib.IsKeyDown(KeyboardKey.KEY_UP))
             {
-                Raylib.DrawText("no i said the WASD keys dummy", 100, 150, 30, Color.PINK);
+                coolSmiley("no I said the WASD keys dummy");
             }
             if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
             {
-                Raylib.DrawText("no i said the WASD keys dummy", 100, 150, 30, Color.PINK);
+                coolSmiley("no I said the WASD keys dummy");
             }
             if (Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
             {
-                Raylib.DrawText("no i said the WASD keys dummy", 100, 150, 30, Color.PINK);
+                coolSmiley("no I said the WASD keys dummy");
             }
             if (Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
             {
-                Raylib.DrawText("no i said the WASD keys dummy", 100, 150, 30, Color.PINK);
+                coolSmiley("no I said the WASD keys dummy");
             }
 
         }
+
         static void Main(string[] args)
         {
             //fönsteret
@@ -52,9 +58,9 @@ namespace fghbj
             int MAX_INPUT_CHARS = 9;
             List<char> name = new List<char>();
             //även för namnet, står att den inte användes men namn input funkar inte utan den. Kollar man dessutom längre ner används den
-           
+
             bool mouseOnText = false;
-            
+
             //för att kunna gå när karaktärn ska göra de.
             bool walkA = true;
             bool walkS = true;
